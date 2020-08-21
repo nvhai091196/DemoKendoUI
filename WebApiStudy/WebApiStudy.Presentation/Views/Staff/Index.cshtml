@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "Nhân viên";
+}
+<div class="row">
+    <div class="col-sm-12 top-5">
+        <div id="grid-staff"></div>
+    </div>
+</div>
+
+
+@section scripts
+{
+
+    <script>
+
+        $(document).ready(function ()
+        {
+            $("#grid-staff").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: "http://localhost:39590/api/Staff/Get",
+                        create: {
+                            url: "http://localhost:39590/api/Staff/Post",
+                            type: "POST"
+                        },
+                        update: {
+                            url: "http://localhost:39590/api/Staff/Put",
+                            type: "PUT"
+                        },
+                    },
+                    pageSize: 20,
+                    serverPaging: true,
+                    serverFiltering: true,
+                    serverSorting: true,
+                    schema: {
+                        model: {
+                            id: "Id",
+                            fields: {
+                                Id: { editable: false, nullable: true },
+                                Name: { validation: { required: true } },
+                                Phone: { validation: { required: true } },
+                                Email: { validation: { required: false } },
+                                DayOfBirth: { type: "date", validation: { required: true } },
+                            }
+                        }
+                    }
+                },
+                height: 550,
+                toolbar: ["create"],
+                sortable: true,
+                pageable: true,
+                editable: "popup",
+                columns: [{
+                    field: "Name",
+                    title: "Name",
+                }, {
+                    field: "Phone",
+                    title: "Phone",
+                    width: 130
+                }, {
+                    field: "Email",
+                    title: "Email",
+                    width: 200
+                },
+                {
+                    field: "DayOfBirth",
+                    title: "Day of birth",
+                    format: "{0: dd/MM/yyyy}",
+                    width: 150
+                },
+                 { command: ["edit", "destroy"], title: "&nbsp;", width: "250px" }
+                ]
+            });
+        });
+    </script>
+}
+<style type="text/css">
+    .customer-photo {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-size: 32px 35px;
+        background-position: center center;
+        vertical-align: middle;
+        line-height: 32px;
+        box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0,0,0,.2);
+        margin-left: 5px;
+    }
+
+    .customer-name {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 32px;
+        padding-left: 3px;
+    }
+
+    .top-5 {
+        margin-top: 5px;
+    }
+</style>
