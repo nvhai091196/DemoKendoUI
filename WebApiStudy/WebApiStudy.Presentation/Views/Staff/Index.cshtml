@@ -10,7 +10,6 @@
 
 @section scripts
 {
-
     <script>
 
         $(document).ready(function ()
@@ -21,17 +20,29 @@
                         read: "http://localhost:39590/api/Staff/Get",
                         create: {
                             url: "http://localhost:39590/api/Staff/Post",
-                            type: "POST"
+                            type: "POST",
+                            dataType: "json"
                         },
                         update: {
                             url: "http://localhost:39590/api/Staff/Put",
-                            type: "PUT"
+                            type: "PUT",
+                            dataType: "json"
                         },
+                        destroy: {
+                            url: "http://localhost:39590/api/Staff/Delete",
+                            type: "DELETE"
+                        },
+                        parameterMap: function (options, operation)
+                        {
+                            if (operation !== "read" && options)
+                            {
+                                var date = new moment(options.DayOfBirth);
+                                options.DayOfBirth = date.format('yyyy-MM-dd');
+                                return options;
+                            }
+                        }
                     },
                     pageSize: 20,
-                    serverPaging: true,
-                    serverFiltering: true,
-                    serverSorting: true,
                     schema: {
                         model: {
                             id: "Id",
@@ -64,8 +75,8 @@
                 },
                 {
                     field: "DayOfBirth",
-                    title: "Day of birth",
-                    format: "{0: dd/MM/yyyy}",
+                    title: "DayOfBirth",
+                    format: "{0:dd/MM/yyyy}",
                     width: 150
                 },
                  { command: ["edit", "destroy"], title: "&nbsp;", width: "250px" }

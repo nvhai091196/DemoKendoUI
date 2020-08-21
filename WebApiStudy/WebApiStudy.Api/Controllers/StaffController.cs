@@ -30,6 +30,7 @@ namespace WebApiStudy.Api.Controllers
         public IHttpActionResult Get()
         {
             var model = staffService.Get()
+                .Where(x=> x.IsDeleted != true)
                 .Select(x => new StaffViewModel
                 {
                     Id = x.Id,
@@ -54,18 +55,21 @@ namespace WebApiStudy.Api.Controllers
         // POST: api/Staff
         public IHttpActionResult Post([FromBody]StaffViewModel model)
         {
-            var staff = new Staff();
-            staff.IsDeleted = false;
-            staff.CreatedDate = DateTime.Now;
-            staff.ModifiedDate = DateTime.Now;
-            staff.Name = model.Name;
-            staff.Phone = model.Phone;
-            staff.Email = model.Email;
-            staff.Address = model.Address;
-            staff.DayOfBirth = model.DayOfBirth;
-            if (staffService.Create(staff))
-                return Json("success");
-            return Json("failed");
+            if (!string.IsNullOrEmpty(model.Name))
+            {
+                var staff = new Staff();
+                staff.IsDeleted = false;
+                staff.CreatedDate = DateTime.Now;
+                staff.ModifiedDate = DateTime.Now;
+                staff.Name = model.Name;
+                staff.Phone = model.Phone;
+                staff.Email = model.Email;
+                staff.Address = model.Address;
+                staff.DayOfBirth = model.DayOfBirth;
+                if (staffService.Create(staff))
+                    return Json(model);
+            }
+            return Json(model);
         }
 
         // PUT: api/Staff/5
@@ -81,23 +85,23 @@ namespace WebApiStudy.Api.Controllers
                 staff.Address = model.Address;
                 staff.DayOfBirth = model.DayOfBirth;
                 if (staffService.Update(staff))
-                    return Json("success");
+                    return Json(model);
             }
-            return Json("failed");
+            return Json(model);
         }
 
         // DELETE: api/Staff/5
-        public IHttpActionResult Delete(int id)
+        public IHttpActionResult Delete([FromBody]StaffViewModel model)
         {
-            var staff = staffService.Get(id);
+            var staff = staffService.Get(model.Id);
             if (staff != null)
             {
-                staff.IsDeleted = true ;
+                staff.IsDeleted = true;
                 staff.ModifiedDate = DateTime.Now;
                 if (staffService.Update(staff))
-                    return Json("success");
+                    return Json(model);
             }
-            return Json("failed");
+            return Json(model);
         }
     }
 }
