@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebApiStudy.DataAccess;
-using WebApiStudy.DataAccess.Models;
 using WebApiStudy.DataAccess.Repositories;
 
 namespace WebApiStudy.Business
@@ -15,18 +14,12 @@ namespace WebApiStudy.Business
         IEnumerable<T> Get();
         T Get(int id);
         bool Create(T entity);
-        //bool CreateRange(IList<T> entities);
         bool Update(T entity);
 
         bool Delete(T entity);
-        //bool DeleteRs(T entity);
-
-        bool CreateRange(List<T> entities);
-
-        bool DeleteRange(List<int> ids);
 
     }
-    public class ServiceBase<T> : IServiceBase<T> where T : BaseEntity
+    public class ServiceBase<T> : IServiceBase<T> where T : class
     {
         protected readonly IRepository<T> repository;
         private readonly IUnitOfWork unitOfWork;
@@ -56,15 +49,10 @@ namespace WebApiStudy.Business
             return Save();
         }
 
-        //public bool DeleteRs(T entity)
-        //{
-        //    repository.DeleteRs(entity);
-        //    return Save();
-        //}
 
         public IEnumerable<T> Get()
         {
-            return repository.GetMany(m => m.IsDeleted != true);
+            return repository.GetAll();
         }
 
         public T Get(int id)
@@ -78,26 +66,7 @@ namespace WebApiStudy.Business
             return Save();
         }
 
-        public bool CreateRange(List<T> entities)
-        {
-            repository.CreateRange(entities);
-            return Save();
-        }
 
-        public bool DeleteRange(List<int> ids)
-        {
-            foreach (var id in ids)
-            {
-                var post = repository.GetById(id);
-                if (post != null)
-                {
-                    post.IsDeleted = true;
-                    repository.Update(post);
-                }
-
-            }
-
-            return Save();
-        }
+     
     }
 }

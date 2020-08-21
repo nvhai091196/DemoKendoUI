@@ -8,16 +8,16 @@ namespace WebApiStudy.DataAccess
 {
     public class DbFactory : IDbFactory
     {
-        DataAccessContext dbContext;
+        DemoDBEntities dbContext;
 
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public DataAccessContext Init()
+        public DemoDBEntities Init()
         {
-            return dbContext ?? (dbContext = new DataAccessContext());
+            return dbContext ?? (dbContext = new DemoDBEntities());
         }
     }
 }

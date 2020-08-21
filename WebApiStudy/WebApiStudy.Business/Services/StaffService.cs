@@ -1,5 +1,4 @@
 using WebApiStudy.DataAccess;
-using WebApiStudy.DataAccess.Models;
 using WebApiStudy.DataAccess.Repositories;
 
 namespace WebApiStudy.Business.Services

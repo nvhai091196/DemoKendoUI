@@ -1,4 +1,3 @@
-using WebApiStudy.DataAccess.Models;
 using WebApiStudy.DataAccess.Repositories;
 
 namespace WebApiStudy.DataAccess.Repositories

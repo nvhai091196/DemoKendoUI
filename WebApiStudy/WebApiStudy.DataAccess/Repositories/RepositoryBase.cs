@@ -6,14 +6,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using WebApiStudy.DataAccess.Models;
 
 namespace WebApiStudy.DataAccess.Repositories
 {
-    public abstract class RepositoryBase<T> where T : BaseEntity
+    public abstract class RepositoryBase<T> where T : class
     {
         #region Properties
-        private DataAccessContext dataContext;
+        private DemoDBEntities dataContext;
         private readonly IDbSet<T> dbSet;
 
         protected IDbFactory DbFactory
@@ -22,7 +21,7 @@ namespace WebApiStudy.DataAccess.Repositories
             private set;
         }
 
-        protected DataAccessContext DbContext
+        protected DemoDBEntities DbContext
         {
             get { return dataContext ?? (dataContext = DbFactory.Init()); }
         }
@@ -58,35 +57,7 @@ namespace WebApiStudy.DataAccess.Repositories
             dataContext.Entry(entity).State = EntityState.Modified;
         }
 
-        public virtual void DeleteRs(int id)
-        {
-            IEnumerable<T> objects = dbSet.Where<T>(m=>m.Id == id).AsEnumerable();
-            foreach (T entity in objects)
-            {
-                entity.IsDeleted = true;
-                dbSet.Attach(entity);
-                dataContext.Entry(entity).State = EntityState.Modified;
-            }
-        }
-
-        public virtual void DeleteRs(T entity)
-        {
-            entity.IsDeleted = true;
-            dbSet.Attach(entity);
-            dataContext.Entry(entity).State = EntityState.Modified;
-        }
-
-        public virtual void DeleteRs(Expression<Func<T, bool>> where)
-        {
-            IEnumerable<T> objects = dbSet.Where<T>(where).AsEnumerable();
-            foreach (T entity in objects)
-            {
-                entity.IsDeleted = true;
-                dbSet.Attach(entity);
-                dataContext.Entry(entity).State = EntityState.Modified;
-            }
-        }
-
+        
         public virtual void Delete(T entity)
         {
             dbSet.Remove(entity);
@@ -108,11 +79,7 @@ namespace WebApiStudy.DataAccess.Repositories
         {
             return dbSet.ToList();
         }
-
-        public virtual IEnumerable<T> GetMany(Expression<Func<T, bool>> where)
-        {
-            return dbSet.Where(where).Where(m=> m.IsDeleted != true).ToList();
-        }
+ 
 
         public T Get(Expression<Func<T, bool>> where)
         {

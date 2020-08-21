@@ -45,6 +45,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,23 +55,65 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccessContext.cs" />
+    <Compile Include="Attendance.cs">
+      <DependentUpon>EntityDemo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BaseEntity.cs" />
     <Compile Include="DBFactory.cs" />
+    <Compile Include="EntityDemo.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntityDemo.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDemo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntityDemo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityDemo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntityDemo.edmx</DependentUpon>
+    </Compile>
     <Compile Include="IDbFactory.cs" />
     <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="Mappers\StaffMapper.cs" />
-    <Compile Include="Models\BaseEntity.cs" />
-    <Compile Include="Models\Staff.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\StaffRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
+    <Compile Include="Repositories\StaffRepository.cs" />
+    <Compile Include="Staff.cs">
+      <DependentUpon>EntityDemo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>EntityDemo.tt</DependentUpon>
+    </Compile>
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="EntityDemo.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EntityDemo.edmx</DependentUpon>
+      <LastGenOutput>EntityDemo.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EntityDemo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EntityDemo.edmx</DependentUpon>
+      <LastGenOutput>EntityDemo.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="EntityDemo.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EntityDemo.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="EntityDemo.edmx.diagram">
+      <DependentUpon>EntityDemo.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

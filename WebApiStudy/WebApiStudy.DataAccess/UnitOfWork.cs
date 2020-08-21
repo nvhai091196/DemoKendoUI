@@ -9,21 +9,21 @@ namespace WebApiStudy.DataAccess
     public class UnitOfWork : IUnitOfWork
     {
         private readonly IDbFactory dbFactory;
-        private DataAccessContext dbContext;
+        private DemoDBEntities dbContext;
 
         public UnitOfWork(IDbFactory dbFactory)
         {
             this.dbFactory = dbFactory;
         }
 
-        public DataAccessContext DbContext
+        public DemoDBEntities DbContext
         {
             get { return dbContext ?? (dbContext = dbFactory.Init()); }
         }
 
         public bool Commit()
         {
-            return DbContext.Commit() > 0;
+            return DbContext.SaveChanges() > 0;
         }
     }
 }

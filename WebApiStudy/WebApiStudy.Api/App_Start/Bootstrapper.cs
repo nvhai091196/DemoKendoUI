@@ -36,8 +36,7 @@ namespace WebApiStudy.Api.App_Start
                 .Where(t => t.Name.EndsWith("Service"))
                 .AsImplementedInterfaces()
                 .InstancePerRequest();
-             
-          
+
 
             IContainer container = builder.Build();
             //DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

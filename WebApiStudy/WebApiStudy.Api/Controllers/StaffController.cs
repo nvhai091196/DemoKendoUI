@@ -9,7 +9,7 @@ using WebApiStudy.Api.Models;
 using WebApiStudy.Business.Services;
 using WebApiStudy.Api.Common;
 using System.Web.Http.Results;
-using WebApiStudy.DataAccess.Models;
+using WebApiStudy.DataAccess;
 
 namespace WebApiStudy.Api.Controllers
 {
@@ -33,6 +33,7 @@ namespace WebApiStudy.Api.Controllers
                 .Select(x => new StaffViewModel
                 {
                     Id = x.Id,
+                    CreatedDate = x.CreatedDate,
                     Name = x.Name,
                     Email = x.Email,
                     Phone = x.Phone,
@@ -54,7 +55,9 @@ namespace WebApiStudy.Api.Controllers
         public IHttpActionResult Post([FromBody]StaffViewModel model)
         {
             var staff = new Staff();
-            staff.SetModifier(0);
+            staff.IsDeleted = false;
+            staff.CreatedDate = DateTime.Now;
+            staff.ModifiedDate = DateTime.Now;
             staff.Name = model.Name;
             staff.Phone = model.Phone;
             staff.Email = model.Email;
@@ -69,9 +72,9 @@ namespace WebApiStudy.Api.Controllers
         public IHttpActionResult Put([FromBody]StaffViewModel model)
         {
             var staff = staffService.Get(model.Id);
-            if(staff != null)
+            if (staff != null)
             {
-                staff.SetUpdateModifier(0);
+                staff.ModifiedDate = DateTime.Now;
                 staff.Name = model.Name;
                 staff.Phone = model.Phone;
                 staff.Email = model.Email;
@@ -84,8 +87,17 @@ namespace WebApiStudy.Api.Controllers
         }
 
         // DELETE: api/Staff/5
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
+            var staff = staffService.Get(id);
+            if (staff != null)
+            {
+                staff.IsDeleted = true ;
+                staff.ModifiedDate = DateTime.Now;
+                if (staffService.Update(staff))
+                    return Json("success");
+            }
+            return Json("failed");
         }
     }
 }

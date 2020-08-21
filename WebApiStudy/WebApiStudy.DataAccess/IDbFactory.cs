@@ -8,6 +8,6 @@ namespace WebApiStudy.DataAccess
 {
     public interface IDbFactory : IDisposable
     {
-        DataAccessContext Init();
+        DemoDBEntities Init();
     }
 }

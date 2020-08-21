@@ -743,3 +743,4 @@ WebApiStudy/WebApiStudy.Api/bin/roslyn/vbc.exe.config
 WebApiStudy/WebApiStudy.Api/bin/roslyn/vbc.rsp
 WebApiStudy/WebApiStudy.Api/bin/roslyn/VBCSCompiler.exe
 WebApiStudy/WebApiStudy.Api/bin/roslyn/VBCSCompiler.exe.config
+/WebApiStudy/WebApiStudy.DataAccess/obj/Debug
